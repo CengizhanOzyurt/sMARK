@@ -1,0 +1,10 @@
+__pycache__/
+*.py[cod]
+.DS_Store
+serviceAccountKey.json
+venv/
+env/
+.env
+
+venv_ocr/
+app/vision/venv_ocr/

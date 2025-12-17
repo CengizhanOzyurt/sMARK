@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+opencv-python
+numpy
+ultralytics
+easyocr
+firebase-admin
+python-multipart
