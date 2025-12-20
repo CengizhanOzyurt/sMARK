@@ -49,45 +49,53 @@ def check_plate_in_db(plate_text):
         print(f"Sorgu Hatası: {e}")
         return False
 
-def update_occupancy(lot_id='main_lot', action='enter'):
-   
+# firebase.py dosyasındaki update_occupancy fonksiyonunu bununla değiştirin:
+
+def update_occupancy(spot_id, action='enter'):
+    """
+    Belirtilen spot_id (örneğin 'spot_B1') için doluluk oranını günceller.
+    """
     if not db: return False, 0
 
-    lot_ref = db.collection('parking_lots').document(lot_id)
+    # DİKKAT: Resimdeki koleksiyon adınız 'parking_spots'
+    spot_ref = db.collection('parking_spots').document(spot_id)
     
     try:
-        doc = lot_ref.get()
+        # Transaction kullanarak veri tutarlılığını garantiye alabiliriz ama
+        # şimdilik basit update yapıyoruz.
+        doc = spot_ref.get()
+        
         if not doc.exists:
-            lot_ref.set({'current_occupancy': 0, 'total_capacity': 100})
-            current = 0
-            total = 100
-        else:
-            data = doc.to_dict()
-            current = data.get('current_occupancy', 0)
-            total = data.get('total_capacity', 100)
+            print(f"❌ Hata: {spot_id} veritabanında bulunamadı!")
+            return False, 0
+            
+        data = doc.to_dict()
+        current = data.get('current_occupancy', 0)
+        total = data.get('total_capacity', 0) # Resimde 200 görünüyordu
 
         if action == 'enter':
             if current >= total:
-                print("⚠️ OTOPARK DOLU!")
+                print(f"⚠️ {spot_id} DOLU! (Kapasite: {total})")
                 return False, current
             
-            lot_ref.update({"current_occupancy": firestore.Increment(1)})
+            # Firestore'da +1 artır
+            spot_ref.update({"current_occupancy": firestore.Increment(1)})
             new_count = current + 1
-            print(f"📈 Giriş Başarılı. Yeni Doluluk: {new_count}")
-            
+            print(f"📈 {spot_id} Güncellendi. Yeni Doluluk: {new_count}/{total}")
             return True, new_count
 
         elif action == 'exit':
             if current <= 0:
                 return False, 0
-            lot_ref.update({"current_occupancy": firestore.Increment(-1)})
-            new_count = current - 1
-            print(f" Çıkış Başarılı. Yeni Doluluk: {new_count}")
             
+            # Firestore'da -1 azalt
+            spot_ref.update({"current_occupancy": firestore.Increment(-1)})
+            new_count = current - 1
+            print(f"📉 {spot_id} Güncellendi. Yeni Doluluk: {new_count}/{total}")
             return True, new_count
             
     except Exception as e:
-        print(f" Firebase Hatası: {e}")
+        print(f"🔥 Firebase Hatası: {e}")
         return False, 0
 
 def get_nearest_empty_spot():

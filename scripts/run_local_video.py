@@ -96,21 +96,43 @@ def run_smart_parking():
                         final_plate = most_common
                         is_registered = check_plate_in_db(final_plate)
                         
+                        # run_local_video.py içindeki ilgili kısmı (if is_registered bloğunu) şununla değiştirin:
+
                         if is_registered:
-                            success, new_count = update_occupancy('main_lot', 'enter')
+                            # 1. Önce müsait olan en yakın otoparkı buluyoruz
+                            target_spot = get_nearest_empty_spot() # firebase.py'den geliyor
                             
-                            if success:
-                                current_status_color = (0, 255, 0)
-                                current_status_message = f"HOSGELDIN: {final_plate}"
-                                occupancy_info = f"DOLULUK: {new_count}/100" 
-                                print(f"BARIYER ACILIYOR -> {final_plate} | {occupancy_info}")
+                            if target_spot:
+                                # Bulunan otoparkın ID'sini alıyoruz (örn: spot_B1)
+                                # NOT: get_nearest_empty_spot fonksiyonuna 'doc_id' eklediğinizi varsayıyorum
+                                # (Önceki cevabımda eklemiştim)
+                                target_id = target_spot.get('doc_id') 
+                                target_name = target_spot.get('name')
+
+                                print(f"📍 Yönlendirilen Otopark: {target_name} ({target_id})")
+
+                                # 2. BULUNAN otoparkın sayacını artırıyoruz
+                                success, new_count = update_occupancy(target_id, 'enter')
                                 
-                                last_barrier_open_time = time.time()
-                                plate_buffer = []
+                                if success:
+                                    current_status_color = (0, 255, 0)
+                                    current_status_message = f"HOSGELDIN: {final_plate}"
+                                    # Ekrana hangi otoparka gideceğini yazıyoruz
+                                    occupancy_info = f"GIDECEGINIZ YER: {target_name}" 
+                                    
+                                    print(f"BARIYER ACILIYOR -> {final_plate} -> {target_name}")
+                                    
+                                    last_barrier_open_time = time.time()
+                                    plate_buffer = []
+                                else:
+                                    current_status_color = (0, 0, 255)
+                                    current_status_message = "SECILEN OTOPARK DOLU!"
+                                    occupancy_info = "LUTFEN BEKLEYIN"
                             else:
+                                # Hiçbir otoparkta yer yoksa
                                 current_status_color = (0, 0, 255)
-                                current_status_message = "OTOPARK DOLU!"
-                                occupancy_info = f"DOLULUK: {new_count}/100"
+                                current_status_message = "TUM OTOPARKLAR DOLU!"
+                                occupancy_info = "YER YOK"
                         else:
                             current_status_color = (0, 0, 255)
                             current_status_message = f"KAYITSIZ: {final_plate}"
