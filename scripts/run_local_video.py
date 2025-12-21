@@ -40,30 +40,23 @@ def run_smart_parking():
     current_status_message = "SISTEM AKTIF"
     occupancy_info = "" 
     current_status_color = (255, 0, 0)
-
-    print("SISTEM BASLATILDI")
-
     while cap.isOpened():
         ret, frame = cap.read()
         if not ret: break
-
         frame_count += 1
         if frame_count % 3 != 0:
             cv2.putText(frame, current_status_message, (30, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, current_status_color, 2)
             if occupancy_info:
                 cv2.putText(frame, occupancy_info, (30, 90), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 255), 2)
-            
             cv2.imshow("Smart Parking System", frame)
             if cv2.waitKey(1) & 0xFF == ord('q'): break
             continue
-
         if time.time() - last_barrier_open_time < BARRIER_COOLDOWN:
             remaining = int(BARRIER_COOLDOWN - (time.time() - last_barrier_open_time))
             msg = f"GECIS IZNI VERILDI ({remaining}s)"
             cv2.putText(frame, msg, (30, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
             if occupancy_info:
                 cv2.putText(frame, occupancy_info, (30, 90), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 255), 2)
-            
             cv2.imshow("Smart Parking System", frame)
             if cv2.waitKey(1) & 0xFF == ord('q'): break
             continue
@@ -96,28 +89,22 @@ def run_smart_parking():
                         final_plate = most_common
                         is_registered = check_plate_in_db(final_plate)
                         
-                        # run_local_video.py içindeki ilgili kısmı (if is_registered bloğunu) şununla değiştirin:
 
                         if is_registered:
-                            # 1. Önce müsait olan en yakın otoparkı buluyoruz
-                            target_spot = get_nearest_empty_spot() # firebase.py'den geliyor
-                            
+                            target_spot = get_nearest_empty_spot() 
                             if target_spot:
-                                # Bulunan otoparkın ID'sini alıyoruz (örn: spot_B1)
-                                # NOT: get_nearest_empty_spot fonksiyonuna 'doc_id' eklediğinizi varsayıyorum
-                                # (Önceki cevabımda eklemiştim)
+                               
                                 target_id = target_spot.get('doc_id') 
                                 target_name = target_spot.get('name')
 
                                 print(f"📍 Yönlendirilen Otopark: {target_name} ({target_id})")
 
-                                # 2. BULUNAN otoparkın sayacını artırıyoruz
                                 success, new_count = update_occupancy(target_id, 'enter')
                                 
                                 if success:
                                     current_status_color = (0, 255, 0)
                                     current_status_message = f"HOSGELDIN: {final_plate}"
-                                    # Ekrana hangi otoparka gideceğini yazıyoruz
+                                    
                                     occupancy_info = f"GIDECEGINIZ YER: {target_name}" 
                                     
                                     print(f"BARIYER ACILIYOR -> {final_plate} -> {target_name}")
@@ -129,7 +116,6 @@ def run_smart_parking():
                                     current_status_message = "SECILEN OTOPARK DOLU!"
                                     occupancy_info = "LUTFEN BEKLEYIN"
                             else:
-                                # Hiçbir otoparkta yer yoksa
                                 current_status_color = (0, 0, 255)
                                 current_status_message = "TUM OTOPARKLAR DOLU!"
                                 occupancy_info = "YER YOK"

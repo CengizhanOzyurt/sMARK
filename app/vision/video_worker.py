@@ -16,8 +16,6 @@ class VideoPlateReader:
             window_size=40,
             min_votes=5
         )
-
-
     @staticmethod
     def crop_plate(frame: np.ndarray, box) -> Optional[np.ndarray]:
         x1, y1, x2, y2 = box
@@ -30,7 +28,6 @@ class VideoPlateReader:
 
         if x2 <= x1 or y2 <= y1:
             return None
-
         return frame[y1:y2, x1:x2]
 
     def process_video(self, video_path: str):
@@ -41,8 +38,7 @@ class VideoPlateReader:
 
         frame_index = 0
         seen_plates = set()
-
-        print("Video Isleniyor...")   
+ 
 
         while True:
             ret, frame = cap.read()
@@ -68,10 +64,8 @@ class VideoPlateReader:
                 if plate_text in seen_plates:
                     continue
                 seen_plates.add(plate_text)
-
                 plate_text = self.ocr.read(plate_crop)
                 self.tracker.add(plate_text)
-
                 best_plate = self.tracker.get_best_plate()
                 if best_plate and best_plate not in seen_plates:
                     seen_plates.add(best_plate)

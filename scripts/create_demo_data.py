@@ -3,11 +3,9 @@ from firebase_admin import credentials, firestore
 import os
 import sys
 
-
 current_dir = os.path.dirname(os.path.abspath(__file__))
 parent_dir = os.path.dirname(current_dir)
 sys.path.append(parent_dir)
-
 
 if not firebase_admin._apps:
     cred = credentials.Certificate(os.path.join(parent_dir, "serviceAccountKey.json"))
@@ -17,8 +15,6 @@ db = firestore.client()
 
 def setup_demo_database():
     print(" Demo Veritabanı Hazırlanıyor...")
-
-    
     spots = [
         {"id": "A1", "name": "A1 - Giriş",   "lat": 41.1083, "lng": 29.0260, "full": False},
         {"id": "A2", "name": "A2 - Giriş",   "lat": 41.1084, "lng": 29.0261, "full": True}, 
@@ -36,16 +32,12 @@ def setup_demo_database():
         }
         db.collection("parking_spots").document(f"spot_{spot['id']}").set(data)
 
-   
     print(" Sayaç ayarlanıyor...")
     db.collection("parking_lots").document("main_lot").set({
         "current_occupancy": 45,
         "total_capacity": 100,
         "name": "Merkez Otopark"
     })
-
-    print(" VERİTABANI SWIFT İÇİN HAZIR!")
-    print("Swift ekibine 'parking_spots' ve 'users' koleksiyonlarını kullanmalarını söyleyebilirsin.")
 
 if __name__ == "__main__":
     setup_demo_database()
