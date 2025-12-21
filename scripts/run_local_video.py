@@ -19,7 +19,16 @@ except ImportError as e:
 MODEL_PATH = "/Users/kawhi2ceng/Desktop/smart-parking-backend/anpr-backend/Automatic-License-Plate-Recognition-using-YOLOv8/license_plate_detector.pt"
 VIDEO_PATH = "test_video4.mp4" 
 BARRIER_COOLDOWN = 15 
-
+def get_nearest_empty_spot():
+    
+    print(" Boş park yeri aranıyor...")
+    return {
+        "doc_id": "spot_A1",            
+        "name": "Ünalan-İspark",       
+        "location": [40.9976667, 29.0612222],
+        "current_occupancy": 100,
+        "total_capacity": 100
+    }
 def run_smart_parking():
     try:
         yolo_model = YOLO(MODEL_PATH)
