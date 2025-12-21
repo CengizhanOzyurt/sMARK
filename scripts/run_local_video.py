@@ -23,11 +23,11 @@ def get_nearest_empty_spot():
     
     print(" Boş park yeri aranıyor...")
     return {
-        "doc_id": "spot_A1",            
-        "name": "Ünalan-İspark",       
-        "location": [40.9976667, 29.0612222],
-        "current_occupancy": 100,
-        "total_capacity": 100
+        "doc_id": "spot_B1",            
+        "name": "Emaar AVM-Otopark",       
+        "location": [41.0020278, 29.0726944],
+        "current_occupancy": 78,
+        "total_capacity": 200
     }
 def run_smart_parking():
     try:
