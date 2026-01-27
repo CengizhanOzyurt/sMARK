@@ -1,4 +1,4 @@
-# Smart Parking Backend
+ # Smart Parking Backend
 
 Computer-vision backend that detects vehicle license plates from video using YOLOv8, reads plates with OCR, validates users against Firebase Firestore, and updates parking occupancy. Includes demo scripts to run on local videos or webcam and utilities to seed Firestore data.
 
@@ -86,6 +86,21 @@ reader.process_video("test_video4.mp4")
 ## Notes
 - `fastapi` and `uvicorn` are included in requirements for potential API usage, but an HTTP server is not configured in this snapshot.
 - The iOS client (`sMARK-iOS`) is not required to run the backend demos.
+
+## Images
+- Place images under `docs/images/` and reference them in Markdown.
+- Suggested files:
+  - `docs/images/system_overview.png` – high-level pipeline diagram.
+  - `docs/images/detection_overlay.png` – screenshot of the OpenCV overlay during a demo run.
+- Plate crop samples: running `VideoPlateReader` saves crops as `debug_plate_{frame_index}.jpg` in the working directory.
+- Example embeds:
+
+```markdown
+![System Overview](docs/images/system_overview.png)
+![Detection Overlay](docs/images/detection_overlay.png)
+```
+
+Tip: To capture an overlay frame during a demo, insert `cv2.imwrite("docs/images/detection_overlay.png", frame)` in `scripts/run_local_video.py` after the overlay text is drawn.
 
 ## Acknowledgments
 - YOLOv8 model and utilities are under `anpr-backend/Automatic-License-Plate-Recognition-using-YOLOv8` with its own license.
