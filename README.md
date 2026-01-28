@@ -1,4 +1,4 @@
- # Smart Parking Backend
+ # sMARK
 
 Computer-vision backend that detects vehicle license plates from video using YOLOv8, reads plates with OCR, validates users against Firebase Firestore, and updates parking occupancy. Includes demo scripts to run on local videos or webcam and utilities to seed Firestore data.
 
@@ -95,6 +95,7 @@ https://github.com/user-attachments/assets/0897fc12-be0f-439e-9f22-ce44335ebc67
 
 ## Acknowledgments
 - YOLOv8 model and utilities are under `anpr-backend/Automatic-License-Plate-Recognition-using-YOLOv8` with its own license.
+
 
 
 
