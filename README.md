@@ -87,17 +87,10 @@ reader.process_video("test_video4.mp4")
 - `fastapi` and `uvicorn` are included in requirements for potential API usage, but an HTTP server is not configured in this snapshot.
 - The iOS client (`sMARK-iOS`) is not required to run the backend demos.
 
-## Images
-- Place images under `docs/images/` and reference them in Markdown.
-- Suggested files:
+## Demo
+
 
 https://github.com/user-attachments/assets/0897fc12-be0f-439e-9f22-ce44335ebc67
-
-
-  - `docs/images/system_overview.png` – high-level pipeline diagram.
-  - `docs/images/detection_overlay.png` – screenshot of the OpenCV overlay during a demo run.
-- Plate crop samples: running `VideoPlateReader` saves crops as `debug_plate_{frame_index}.jpg` in the working directory.
-- Example embeds:
 
 ```markdown
 ![System Overview](docs/images/system_overview.png)
@@ -108,4 +101,5 @@ Tip: To capture an overlay frame during a demo, insert `cv2.imwrite("docs/images
 
 ## Acknowledgments
 - YOLOv8 model and utilities are under `anpr-backend/Automatic-License-Plate-Recognition-using-YOLOv8` with its own license.
+
 
