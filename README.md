@@ -87,19 +87,14 @@ reader.process_video("test_video4.mp4")
 - `fastapi` and `uvicorn` are included in requirements for potential API usage, but an HTTP server is not configured in this snapshot.
 - The iOS client (`sMARK-iOS`) is not required to run the backend demos.
 
-## Demo
-
+## App Demo
 
 https://github.com/user-attachments/assets/0897fc12-be0f-439e-9f22-ce44335ebc67
 
-```markdown
-![System Overview](docs/images/system_overview.png)
-![Detection Overlay](docs/images/detection_overlay.png)
-```
-
-Tip: To capture an overlay frame during a demo, insert `cv2.imwrite("docs/images/detection_overlay.png", frame)` in `scripts/run_local_video.py` after the overlay text is drawn.
+<img width="530" height="306" alt="image" src="https://github.com/user-attachments/assets/299048d8-58ac-4ab4-aec1-d40d06e37b0f" />
 
 ## Acknowledgments
 - YOLOv8 model and utilities are under `anpr-backend/Automatic-License-Plate-Recognition-using-YOLOv8` with its own license.
+
 
 
